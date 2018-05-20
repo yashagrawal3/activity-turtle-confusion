@@ -5,3 +5,4 @@ dist
 po.original
 po.merged
 *.rej
+*.patch
