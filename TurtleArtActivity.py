@@ -565,7 +565,7 @@ class TurtleArtActivity(activity.Activity):
     def _draw_cartoon(self):
         pos = self.tw.turtles.get_active_turtle().get_xy()
         self.tw.turtles.get_active_turtle().set_xy(
-            int(-gtk.gdk.screen_width() / 2), 0, pendown=False)
+            int(-Gdk.Screen.width() / 2), 0, pendown=False)
         self.tw.lc.insert_image(center=False, resize=False,
                                 filepath=os.path.join(
                 activity.get_bundle_path(), 'images', 'turtle-a.png'))
