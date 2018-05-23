@@ -64,15 +64,12 @@ class Camera_sensor(Plugin):
 
     def setup(self):
         ''' Set up the palettes '''
-        sensors_palette = make_palette('sensor',
-                                       colors=["#FF6060", "#A06060"],
-                                       help_string=_(
-                                           'Palette of sensor blocks'),
-                                       position=6)
+
         media_palette = make_palette('media',
                                      colors=["#A0FF00", "#80A000"],
                                      help_string=_('Palette of media objects'),
                                      position=7)
+        sensors_palette = media_palette
 
         # set up camera-specific blocks
         media_blocks_dictionary['camera'] = self.prim_take_picture0
@@ -88,7 +85,7 @@ class Camera_sensor(Plugin):
                 second_cam = True
 
         sensors_palette.add_block('luminance',
-                                  hidden=hidden,
+                                  hidden=True,
                                   style='box-style',
                                   label=_('brightness'),
                                   help_string=_(
@@ -103,7 +100,7 @@ class Camera_sensor(Plugin):
                       call_afterwards=self.after_luminance))
 
         media_palette.add_block('camera',
-                                hidden=hidden,
+                                hidden=True,
                                 style='box-style-media',
                                 label=' ',
                                 default='CAMERA',
@@ -111,7 +108,7 @@ class Camera_sensor(Plugin):
                                 content_block=True)
 
         media_palette.add_block('camera1',
-                                hidden=not(second_cam),
+                                hidden=True,
                                 style='box-style-media',
                                 label=' ',
                                 default='CAMERA',
