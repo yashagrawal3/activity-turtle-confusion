@@ -64,7 +64,6 @@ class Camera_sensor(Plugin):
 
     def setup(self):
         ''' Set up the palettes '''
-
         media_palette = make_palette('media',
                                      colors=["#A0FF00", "#80A000"],
                                      help_string=_('Palette of media objects'),
@@ -80,55 +79,107 @@ class Camera_sensor(Plugin):
         hidden = True
         second_cam = False
         if self._status:
-            hidden = False
+            sensors_palette.add_block('luminance',
+                                      hidden=True,
+                                      style='box-style',
+                                      label=_('brightness'),
+                                      help_string=_(
+                    'light level detected by camera'),
+                                      value_block=True,
+                                      prim_name='luminance')
+            self._parent.lc.def_prim(
+                'luminance', 0,
+                Primitive(self.prim_read_camera,
+                          return_type=TYPE_NUMBER,
+                          kwarg_descs={'luminance_only': ConstantArg(True)},
+                          call_afterwards=self.after_luminance))
+
+            # Depreciated block
+            sensors_palette.add_block('read_camera',
+                                      hidden=True,
+                                      style='box-style',
+                                      label=_('brightness'),
+                                      help_string=_(
+                    'Average RGB color from camera \
+is pushed to the stack'),
+                                      value_block=True,
+                                      prim_name='read_camera')
+            self._parent.lc.def_prim(
+                'read_camera', 0,
+                Primitive(self.prim_read_camera,
+                          kwarg_descs={'luminance_only': ConstantArg(False)}))
+
+            media_palette.add_block('camera',
+                                    hidden=True,
+                                    style='box-style-media',
+                                    label=' ',
+                                    default='CAMERA',
+                                    help_string=_('camera output'),
+                                    content_block=True)
             if len(self.devices) > 1:
-                second_cam = True
+                media_palette.add_block('camera1',
+                                        hidden=True,
+                                        style='box-style-media',
+                                        label=' ',
+                                        default='CAMERA',
+                                        help_string=_('camera output'),
+                                        content_block=True)
+            else:
+                media_palette.add_block('camera1',
+                                        hidden=True,
+                                        style='box-style-media',
+                                        label=' ',
+                                        default='CAMERA',
+                                        help_string=_('camera output'),
+                                        content_block=True)
 
-        sensors_palette.add_block('luminance',
-                                  hidden=True,
-                                  style='box-style',
-                                  label=_('brightness'),
-                                  help_string=_(
-                                      'light level detected by camera'),
-                                  value_block=True,
-                                  prim_name='luminance')
-        self._parent.lc.def_prim(
-            'luminance', 0,
-            Primitive(self.prim_read_camera,
-                      return_type=TYPE_NUMBER,
-                      kwarg_descs={'luminance_only': ConstantArg(True)},
-                      call_afterwards=self.after_luminance))
+        else:  # No camera, so blocks should do nothing
+            sensors_palette.add_block('luminance',
+                                      hidden=True,
+                                      style='box-style',
+                                      label=_('brightness'),
+                                      help_string=\
+                                          _('light level detected by camera'),
+                                      value_block=True,
+                                      prim_name='read_camera')
+            self._parent.lc.def_prim(
+                'luminance', 0,
+                Primitive(self.prim_read_camera,
+                          return_type=TYPE_NUMBER,
+                          kwarg_descs={'luminance_only': ConstantArg(True)},
+                          call_afterwards=self.after_luminance))
 
-        media_palette.add_block('camera',
-                                hidden=True,
-                                style='box-style-media',
-                                label=' ',
-                                default='CAMERA',
-                                help_string=_('camera output'),
-                                content_block=True)
+            # Depreciated block
+            sensors_palette.add_block('read_camera',
+                                      hidden=True,
+                                      style='box-style',
+                                      label=_('brightness'),
+                                      help_string=_(
+                    'Average RGB color from camera \
+is pushed to the stack'),
+                                      value_block=True,
+                                      prim_name='read_camera')
+            self._parent.lc.def_prim(
+                'read_camera', 0,
+                Primitive(self.prim_read_camera,
+                          return_type=TYPE_NUMBER,
+                          kwarg_descs={'luminance_only': ConstantArg(False)}))
 
-        media_palette.add_block('camera1',
-                                hidden=True,
-                                style='box-style-media',
-                                label=' ',
-                                default='CAMERA',
-                                help_string=_('camera output'),
-                                content_block=True)
+            media_palette.add_block('camera',
+                                    hidden=True,
+                                    style='box-style-media',
+                                    label=' ',
+                                    default='CAMERA',
+                                    help_string=_('camera output'),
+                                    content_block=True)
 
-        # Depreciated block
-        sensors_palette.add_block(
-            'read_camera',
-            hidden=True,
-            style='box-style',
-            label=_('brightness'),
-            help_string=_('Average RGB color from camera is pushed to the stack'),
-            value_block=True,
-            prim_name='read_camera')
-        self._parent.lc.def_prim(
-            'read_camera', 0,
-            Primitive(self.prim_read_camera,
-                      return_type=TYPE_NUMBER,
-                      kwarg_descs={'luminance_only': ConstantArg(False)}))
+            media_palette.add_block('camera1',
+                                    hidden=True,
+                                    style='box-style-media',
+                                    label=' ',
+                                    default='CAMERA',
+                                    help_string=_('camera output'),
+                                    content_block=True)
 
         NO_IMPORT.append('camera')
         BLOCKS_WITH_SKIN.append('camera')

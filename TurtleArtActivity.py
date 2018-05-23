@@ -178,7 +178,6 @@ class TurtleArtActivity(activity.Activity):
         self._challenge_window = None
         self._load_level()
 
-
     def _get_local_settings(self, activity_root):
         """ return an activity-specific Gio.Settings
         """
@@ -340,7 +339,6 @@ class TurtleArtActivity(activity.Activity):
         ''' Load a project from the Journal. '''
         self._create_new = new
         if hasattr(self, 'get_window'):
-            _logger.debug('setting watch cursor')
             if hasattr(self.get_window(), 'get_cursor'):
                 self._old_cursor = self.get_window().get_cursor()
                 self.get_window().set_cursor(Gdk.Cursor(Gdk.CursorType.WATCH))
@@ -557,6 +555,22 @@ class TurtleArtActivity(activity.Activity):
         self.tw.turtles.get_active_turtle().set_xy(pos[0], pos[1],
                                                    pendown=False)
 
+    def restore_state(self):
+        ''' Restore the current challange after a clear screen '''
+        if self._custom_filepath is None:
+            self._load_level()
+        else:
+            self._load_level(custom=True)
+
+    def _draw_cartoon(self):
+        pos = self.tw.turtles.get_active_turtle().get_xy()
+        self.tw.turtles.get_active_turtle().set_xy(
+            int(-gtk.gdk.screen_width() / 2), 0, pendown=False)
+        self.tw.lc.insert_image(center=False, resize=False,
+                                filepath=os.path.join(
+                activity.get_bundle_path(), 'images', 'turtle-a.png'))
+        self.tw.turtles.get_active_turtle().set_xy(pos[0], pos[1],
+                                                   pendown=False)
 
     def do_run_cb(self, button):
         ''' Callback for run button (rabbit) '''
@@ -605,14 +619,12 @@ class TurtleArtActivity(activity.Activity):
     def do_samples_cb(self, button):
         ''' Sample-projects open dialog '''
         if hasattr(self, 'get_window'):
-            _logger.debug('setting watch cursor')
             if hasattr(self.get_window(), 'get_cursor'):
                 self._old_cursor = self.get_window().get_cursor()
             self.get_window().set_cursor(Gdk.Cursor(Gdk.CursorType.WATCH))
         #self._create_store()
         self.tw.load_file_from_chooser(True)
         # Now that the file is loaded, restore the cursor
-        _logger.debug('restoring cursor')
         self.restore_cursor()
 
     def adjust_sw(self, dx, dy):
@@ -916,7 +928,6 @@ class TurtleArtActivity(activity.Activity):
 
     def _setup_extra_controls(self):
         ''' Add the rest of the buttons to the main toolbar '''
-
         self._make_project_buttons(self.toolbox.toolbar)
 
         self.extras_separator = self._add_separator(
@@ -1386,7 +1397,6 @@ class TurtleArtActivity(activity.Activity):
         if self._jobject and self._jobject.file_path or \
                 os.path.isfile(str(self.handle.uri)):
             if hasattr(self, 'get_window'):
-                _logger.debug('setting watch cursor')
                 if hasattr(self.get_window(), 'get_cursor'):
                     self._old_cursor = self.get_window().get_cursor()
                     self.get_window().set_cursor(
@@ -1836,7 +1846,7 @@ class TurtleArtActivity(activity.Activity):
                               store)
             icon_view.set_pixbuf_column(0)
             icon_view.grab_focus()
-            self._sample_window.add_with_viewport(icon_view)
+            self._challenge_window.add_with_viewport(icon_view)
             icon_view.show()
             self._fill_challenges_list(store)
 
@@ -1905,7 +1915,6 @@ class TurtleArtActivity(activity.Activity):
         file_list.sort()
         return file_list
 
-
     def is_toolbar_expanded(self):
         if self.palette_toolbar_button.is_expanded():
             return True
@@ -1916,3 +1925,10 @@ class TurtleArtActivity(activity.Activity):
         elif self.activity_toolbar_button.is_expanded():
             return True
         return False
+
+    def _scan_for_challenges(self):
+        file_list = list(glob.glob(os.path.join(activity.get_bundle_path(),
+                                                'samples', 'thumbnails',
+                                                '*.svg')))
+        file_list.sort()
+        return file_list

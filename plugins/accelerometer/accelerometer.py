@@ -64,8 +64,8 @@ class Accelerometer(Plugin):
                               hidden=True,
                               style='basic-style-extended-vertical',
                               label=_('acceleration'),
-                              help_string=_(
-                                  'push acceleration in x, y, z to heap'),
+                              help_string=\
+                                  _('push acceleration in x, y, z to heap'),
                               prim_name='xyz')
 
         self._parent.lc.def_prim(

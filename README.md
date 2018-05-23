@@ -1,26 +1,20 @@
-TurtleBlocks
-============
+What is this?
+=============
 
-Turtle Art, also known as Turtle Blocks, is an activity with a
-Logo-inspired graphical "turtle" that draws colorful art based on
-snap-together visual programming elements. Its "low floor" provides an
-easy entry point for beginners. It also has "high ceiling"
-programming, graphics, mathematics, and Computer Science features
-which will challenge the more adventurous student.
+Turtle Confusion presents 40 shape challenges to the learner that must be completed using basic Logo-blocks. The challenges as based on Barry Newell's 1988 book, Turtle Confusion: Logo Puzzles and Riddles.
 
-.. note ::
+How to use?
+===========
 
-   There are two inter-compatible programs: Turtle Art and Turtle Blocks. Turtle Art, which closely parallels the Java version of Turtle Art maintained by Brian Silverman, offers a small subset of the functionality of Turtle Blocks. Turtle Blocks is the version included in the Sugar distribution. Sugar users probably want to use Turtle Blocks rather than Turtle Art. (Also see Turtle Confusion, a collection of programming challenges designed by Barry Newell.)
+Turtle Confusion is part of the Sugar desktop.  Please refer to;
 
-Using Turtle Art
-----------------
+* [How to Get Sugar on sugarlabs.org](https://sugarlabs.org/),
+* [How to use Sugar](https://help.sugarlabs.org/),
+* [How to use Turtle Confusion](https://help.sugarlabs.org/en/turtle_confusion.html)
 
-Start by clicking on (or dragging) blocks from the Turtle palette. Use
-multiple blocks to create drawings; as the turtle moves under your
-control, colorful lines are drawn.
+How to upgrade?
+===============
 
-You add blocks to your program by clicking on or dragging them from
-the palette to the main area. You can delete a block by dragging it
-back onto the palette. Click anywhere on a "stack" of blocks to start
-executing that stack or by clicking in the Rabbit (fast) or Turtle
-(slow) on the Main Toolbar.
+On Sugar desktop systems;
+* use [My Settings](https://help.sugarlabs.org/en/my_settings.html), [Software Update](https://help.sugarlabs.org/en/my_settings.html#software-update), or;
+* use Browse to open [activities.sugarlabs.org](https://activities.sugarlabs.org/), search for `Turtle Confusion`, then download.

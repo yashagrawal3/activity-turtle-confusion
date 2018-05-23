@@ -155,7 +155,6 @@ http://turtleartsite.sugarlabs.org to upload your project.'))
 
     def _do_remote_logon(self, widget):
         """ Log into the upload server """
-
         username = self.username_entry.get_text()
         password = self.password_entry.get_text()
         server = xmlrpclib.ServerProxy(self._upload_server + '/call/xmlrpc')
