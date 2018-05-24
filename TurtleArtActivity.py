@@ -596,7 +596,7 @@ class TurtleArtActivity(activity.Activity):
         if not self._stop_help:
             self._stop_help = True
             self.tw.showblocks()
-            self.stop_turtle_button.set_icon('hideshowoff')
+            self.stop_turtle_button.set_icon_name('hideshowoff')
             self.stop_turtle_button.set_tooltip(_('Hide blocks'))
             return
 
