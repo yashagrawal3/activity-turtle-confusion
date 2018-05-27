@@ -51,6 +51,7 @@ from sugar3 import mime
 
 _logger.debug('Started Sugar3')
 import os
+import glob
 import tarfile
 import subprocess
 import ConfigParser
@@ -866,12 +867,8 @@ class TurtleArtActivity(activity.Activity):
         self.palette_toolbar_button = ToolbarButton(
             page=self._palette_toolbar, icon_name='palette')
 
-        # self._help_button = HelpButton(self)
-        self._help_button = self._add_button('help-toolbar',
-                                             _('Help'),
-                                             self._do_help_cb,
-                                             None)
- 
+        self._help_button = HelpButton(self)
+
         self._make_load_save_buttons(self.activity_toolbar_button)
 
         self.activity_toolbar_button.show()
@@ -1906,7 +1903,7 @@ class TurtleArtActivity(activity.Activity):
         self._challenge_window.hide()
         self._load_level()
 
-    def _fill_challenge_list(self, store):
+    def _fill_challenges_list(self, store):
         '''
         Append images from the artwork_paths to the store.
         '''
