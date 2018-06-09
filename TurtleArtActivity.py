@@ -42,12 +42,10 @@ from sugar3.graphics.toolbutton import ToolButton
 from sugar3.graphics.radiotoolbutton import RadioToolButton
 from sugar3.graphics.alert import ConfirmationAlert, Alert, NotifyAlert
 from sugar3.graphics import style
-from sugar3.graphics.objectchooser import ObjectChooser
 from sugar3.graphics.icon import Icon
 from sugar3.graphics.xocolor import XoColor
 from sugar3.datastore import datastore
 from sugar3 import profile
-from sugar3 import mime
 
 _logger.debug('Started Sugar3')
 import os
@@ -340,6 +338,7 @@ class TurtleArtActivity(activity.Activity):
         ''' Load a project from the Journal. '''
         self._create_new = new
         if hasattr(self, 'get_window'):
+            _logger.debug('setting watch cursor')
             if hasattr(self.get_window(), 'get_cursor'):
                 self._old_cursor = self.get_window().get_cursor()
                 self.get_window().set_cursor(Gdk.Cursor(Gdk.CursorType.WATCH))
@@ -556,23 +555,6 @@ class TurtleArtActivity(activity.Activity):
         self.tw.turtles.get_active_turtle().set_xy(pos[0], pos[1],
                                                    pendown=False)
 
-    def restore_state(self):
-        ''' Restore the current challange after a clear screen '''
-        if self._custom_filepath is None:
-            self._load_level()
-        else:
-            self._load_level(custom=True)
-
-    def _draw_cartoon(self):
-        pos = self.tw.turtles.get_active_turtle().get_xy()
-        self.tw.turtles.get_active_turtle().set_xy(
-            int(-Gdk.Screen.width() / 2), 0, pendown=False)
-        self.tw.lc.insert_image(center=False, resize=False,
-                                filepath=os.path.join(
-                activity.get_bundle_path(), 'images', 'turtle-a.png'))
-        self.tw.turtles.get_active_turtle().set_xy(pos[0], pos[1],
-                                                   pendown=False)
-
     def do_run_cb(self, button):
         ''' Callback for run button (rabbit) '''
         self.run_button.set_icon_name('run-faston')
@@ -620,12 +602,14 @@ class TurtleArtActivity(activity.Activity):
     def do_samples_cb(self, button):
         ''' Sample-projects open dialog '''
         if hasattr(self, 'get_window'):
+            _logger.debug('setting watch cursor')
             if hasattr(self.get_window(), 'get_cursor'):
                 self._old_cursor = self.get_window().get_cursor()
             self.get_window().set_cursor(Gdk.Cursor(Gdk.CursorType.WATCH))
         #self._create_store()
         self.tw.load_file_from_chooser(True)
         # Now that the file is loaded, restore the cursor
+        _logger.debug('setting watch cursor')
         self.restore_cursor()
 
     def adjust_sw(self, dx, dy):
@@ -1402,6 +1386,7 @@ class TurtleArtActivity(activity.Activity):
         if self._jobject and self._jobject.file_path or \
                 os.path.isfile(str(self.handle.uri)):
             if hasattr(self, 'get_window'):
+                _logger.debug('setting watch cursor')
                 if hasattr(self.get_window(), 'get_cursor'):
                     self._old_cursor = self.get_window().get_cursor()
                     self.get_window().set_cursor(
@@ -1503,7 +1488,7 @@ class TurtleArtActivity(activity.Activity):
             elif response_id is Gtk.ResponseType.CANCEL:
                 _logger.debug('cancel install')
                 self.remove_alert(alert)
-                self._cancel_plugin_install(tmp_dir)
+                cancel_plugin_install(tmp_dir)
 
         alert.connect('response', _reload_plugin_alert_response_cb, self,
                       tmp_dir, tmp_path, plugin_path, plugin_name, file_info)
@@ -1835,7 +1820,7 @@ class TurtleArtActivity(activity.Activity):
         if self._challenge_window is None:
             self._challenge_box = Gtk.EventBox()
             self._challenge_window = Gtk.ScrolledWindow()
-            self._challenge_window.set_policy(Gtk.PolicyType.AUTOMATIC,
+            self._challenge_window.set_policy(Gtk.PolicyType.NEVER,
                                            Gtk.PolicyType.AUTOMATIC)
             width = Gdk.Screen.width() / 2
             height = Gdk.Screen.height() / 2
@@ -1902,6 +1887,8 @@ class TurtleArtActivity(activity.Activity):
         self._selected_challenge = image_path
         self._challenge_window.hide()
         self._load_level()
+        self.get_window().set_cursor(Gdk.Cursor(Gdk.CursorType.WATCH))
+
 
     def _fill_challenges_list(self, store):
         '''
