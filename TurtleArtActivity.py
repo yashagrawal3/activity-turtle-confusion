@@ -109,7 +109,6 @@ class TurtleArtActivity(activity.Activity):
         self._check_ver_change(get_path(activity, 'data'))
         self.connect("notify::active", self._notify_active_cb)
 
-        self._level = 0
         self._custom_filepath = None
 
         _logger.debug('_setup_toolbar')
