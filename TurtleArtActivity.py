@@ -608,7 +608,7 @@ class TurtleArtActivity(activity.Activity):
         #self._create_store()
         self.tw.load_file_from_chooser(True)
         # Now that the file is loaded, restore the cursor
-        _logger.debug('setting watch cursor')
+        _logger.debug('restoring cursor')
         self.restore_cursor()
 
     def adjust_sw(self, dx, dy):
