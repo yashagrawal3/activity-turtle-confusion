@@ -1916,10 +1916,3 @@ class TurtleArtActivity(activity.Activity):
         elif self.activity_toolbar_button.is_expanded():
             return True
         return False
-
-    def _scan_for_challenges(self):
-        file_list = list(glob.glob(os.path.join(activity.get_bundle_path(),
-                                                'samples', 'thumbnails',
-                                                '*.svg')))
-        file_list.sort()
-        return file_list
