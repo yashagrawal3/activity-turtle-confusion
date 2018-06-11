@@ -1842,7 +1842,7 @@ class TurtleArtActivity(activity.Activity):
             width = Gdk.Screen.width() / 4
             height = Gdk.Screen.height() / 4
 
-            self._challenge_box.add(self._sample_window)
+            self._challenge_box.add(self._challenge_window)
             self.fixed.put(self._challenge_box, width, height)
             self._offsets = {}
             offset_fd = open(os.path.join(activity.get_bundle_path(),
